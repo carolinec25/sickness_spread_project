@@ -1,22 +1,28 @@
 import tkinter #used for visual frame
 import random
+import time
 
 class Frame():
     def __init__(self):
-        w = 600
-        h = 600
-
-        self.root=tkinter.Tk()
+        self.root = tkinter.Tk()
         self.root.title("sickness")
-        self.canvas = tkinter.Canvas(self.root,width=w,height=h,bg="white")
-        self.hall = Hallway(self.canvas)
+
+        self.canvas = tkinter.Canvas(self.root, width=600, height=600, bg="white")
         self.canvas.pack()
-        self.run() 
-        self.root.mainloop()
+
+        self.hall = Hallway(self.canvas)
+
+        self.run()
+        self.root.mainloop()   
+
     def run(self):
-        #self.hall.tick()
-        #self.hall.draw()
-        self.root.after(20,self.run)
+        self.hall.draw()
+        self.hall.tick()
+        self.root.after(20, self.run)
+    
+
+
+
 class Hallway():
     width = 600
     height= 600
@@ -28,22 +34,33 @@ class Hallway():
     
     def __init__(self,canvas):
         self.canvas = canvas
-        kids = list()
-        elders = list()
-        adults = list()
+        self.kids = list()
+        self.elders = list()
+        self.adults = list()
         self.walls = [[False for _ in range(self.height)] for _ in range(self.width)]
         self.gen_walls()
         self.madeHumans = False
-    def tick(self):
-        pass
-    def draw (self):
-        def makeHumans():
-            for i in range(5000):
-                pass
-                #need to set direction
-        if self.madeHumans == False:
-            madeHumans = True
 
+    def tick(self):
+        for a in self.adults:
+            a.move()
+        print("tick method")
+
+    def draw (self):
+        if self.madeHumans == False:
+            self.madeHumans = True
+            self.makeHumans()
+
+    def makeHumans(self):
+        for i in range(500):
+            H_point = self.safeLocation()
+            x = H_point.getX()
+            y = H_point.getY()
+            h = Humans(self.canvas,x,y,self)
+            self.adults.append(h)
+            #need to set direction
+    def getAdultList(self):
+        return self.adults
     def gen_walls(self):
         
         def randomRoom(baseX,baseY,baseW,baseH,
@@ -103,15 +120,75 @@ class Hallway():
         self.canvas.create_rectangle(x, y, 299, 299,fill="black")
         '''
     def safeLocation(self):
-        pass
+        x = random.randint(0,580)
+        y = random.randint(0,580)
+        if self.walls[x][y] == False:
+            return self.safeLocation()
+        else:
+            return Point(x,y)
+    def getHalls(self):
+        return self.walls
+        
+
 class Humans():
-     pass
+    def __init__(self, canvas, x, y,h):
+        self.canvas = canvas
+        self.x = x
+        self.y = y
+        self.size = 4
+        self.shape = self.canvas.create_rectangle(x, y, x+4, y+4, fill="red")
+        self.direction = random.randint(0,3)
+        self.h =h
+
+    def move(self):
+        dx, dy = 0, 0
+
+        if self.direction == 0:
+           dy = -2
+        elif self.direction == 1:
+           dy = 2
+        elif self.direction == 2:
+            dx = -2
+        elif self.direction == 3:
+            dx = 2
+
+        new_x = self.x + dx
+        new_y = self.y + dy
+
+        # Check screen bounds first
+        if not (0 <= new_x <= 596 and 0 <= new_y <= 596):
+            self.direction = random.randint(0,3)
+            return
+
+        # Check wall collision ONLY at new location
+        for i in range(new_x, new_x + self.size):
+            for j in range(new_y, new_y + self.size):
+                if self.h.walls[i][j] == False:
+                    self.direction = random.randint(0,3)
+                    return
+                    
+
+        # If no collision, move
+        self.canvas.move(self.shape, dx, dy)
+        self.x = new_x
+        self.y = new_y
+        if random.random() < 0.02:
+            self.direction = random.randint(0,3)
+        
+    def getdirction(self):
+        return self.direction
+    def setdirction(self,x):
+        self.direction = x
+
 """ class Children(humans):
      pass
 class Edlers(humans):
      pass
 class Adults(humans):
      pass """
+
+
+
 class Point():
     def __init__(self,x,y):
         self.x = x
