@@ -25,13 +25,19 @@ class Frame():
 
 class Hallway():
     width = 600
-    height =600
-    def __init__(self,c:tkinter.Canvas):
-        self.canvas = c
-        self.kids = list()
-        self.elders = list()
-        self.adults = list()
-        self.walls = [[False for _ in range(600)] for _ in range(600)]
+    height= 600
+    #assign colors
+    KRGB = "blue"
+    ERGB = "green"
+    ARGB = "yellow"
+    #need do 
+    
+    def __init__(self,canvas):
+        self.canvas = canvas
+        kids = list()
+        elders = list()
+        adults = list()
+        self.walls = [[False for _ in range(self.height)] for _ in range(self.width)]
         self.gen_walls()
         self.madeHumans = False
 
@@ -56,7 +62,42 @@ class Hallway():
     def getAdultList(self):
         return self.adults
     def gen_walls(self):
-        self.canvas.create_rectangle(0, 0, 600, 600,fill="white")
+        
+        def randomRoom(baseX,baseY,baseW,baseH,
+                       randX=1/10,randY=1/10,randW=3/20,randH=3/20,color = "black"):
+            #initialize to base value
+            x = round(baseX*self.width)
+            y = round(baseY*self.height)
+
+            #add/subtract random amounts
+            x+= random.randint(round(-randX*self.width), round(randY*self.width))
+            y+= random.randint(round(-randX*self.height), round(randY*self.height))
+
+            #initialize to base value
+            w = round(x+ baseW*self.width)
+            h = round(y+ baseH*self.height)
+
+            #add/subtract random amounts
+            w+= random.randint(0,round(randW*self.width))
+            h+= random.randint(0,round(randH*self.height))
+
+            self.canvas.create_rectangle(x, y, w, h,fill=color)
+            for i in range(x, min(x+w, self.width)):
+                for j in range(y, min(y+h, self.height)):
+                    self.walls[i][j] = True
+
+        #central room
+        randomRoom(7/20,7/20,5/20,5/20)
+        randomRoom(1/20,15/20,3/20,1/20)
+
+
+
+
+
+
+
+
+        '''
         for V in range(50): #makes rooms
             x = random.randint(0, 600)
             y = random.randint(0, 600)
@@ -77,6 +118,7 @@ class Hallway():
                 for j in range(y, min(y+h, 600)):
                     self.walls[i][j] = True
         self.canvas.create_rectangle(x, y, 299, 299,fill="black")
+        '''
     def safeLocation(self):
         x = random.randint(0,580)
         y = random.randint(0,580)
