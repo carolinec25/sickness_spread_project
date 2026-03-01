@@ -31,17 +31,31 @@ class Hallway():
         self.kids = list()
         self.elders = list()
         self.adults = list()
+        self.sickList =list()
         self.walls = [[False for _ in range(600)] for _ in range(600)]
+        self.sickArr = [[False for _ in range(600)] for _ in range(600)]
         self.gen_walls()
         self.madeHumans = False
 
     def tick(self):
-        for a in self.adults:
-            a.move()
-        for c in self.kids:
-            c.move()   
-        for e in self.elders:
-            e.move()              
+        allHumans = self.adults + self.kids + self.elders +self.sickList
+
+        # Move all humans once
+        for human in allHumans:
+            human.move()
+
+        # Spread sickness
+        for human in allHumans:
+            for i in range(human.getX() - 2, human.getX() + 3):
+                for j in range(human.getY() - 2, human.getY() + 3):
+                    if 0 <= i < 600 and 0 <= j < 600:
+                        if self.sickArr[i][j]:
+                            human.makesick()
+
+        # Update sickArr for all sick humans
+        for human in allHumans:
+            if human.isSick:
+                self.sickArr[human.getX()][human.getY()] = True        
         print("tick method")
 
     def draw (self):
@@ -68,6 +82,13 @@ class Hallway():
             y = H_point.getY()
             h = Edlers(self.canvas,x,y,self)
             self.elders.append(h)
+        for i in range(5):
+            H_point = self.safeLocation()
+            x = H_point.getX()
+            y = H_point.getY()
+            h =Adults(self.canvas,x,y,self)
+            h.makesick()
+            self.sickList.append(h)
             #need to set direction
     def getAdultList(self):
         return self.adults
@@ -115,6 +136,7 @@ class Humans():
         self.h =h
         self.speed = 2
         self.rFactor = 10
+        self.isSick = False
 
 
     def move(self):
@@ -156,7 +178,13 @@ class Humans():
         return self.direction
     def setdirction(self,x):
         self.direction = x
-
+    def getX(self):
+        return self.x
+    def getY(self):
+        return self.y
+    def makesick(self):
+        self.isSick = True
+        self.canvas.itemconfig(self.shape, fill='red')
 class Children(Humans):
     def __init__(self, canvas, x, y,h):
         self.canvas = canvas
@@ -168,6 +196,7 @@ class Children(Humans):
         self.h =h
         self.speed = 3
         self.rFactor = 30
+        self.isSick = False
     pass
 class Edlers(Humans):
     def __init__(self, canvas, x, y,h):
@@ -180,6 +209,7 @@ class Edlers(Humans):
         self.h =h
         self.speed = 1
         self.rFactor = 10
+        self.isSick = False
     pass
 class Adults(Humans):
      pass 
