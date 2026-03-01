@@ -34,9 +34,9 @@ class Hallway():
     
     def __init__(self,canvas):
         self.canvas = canvas
-        kids = list()
-        elders = list()
-        adults = list()
+        self.kids = list()
+        self.elders = list()
+        self.adults = list()
         self.walls = [[False for _ in range(self.height)] for _ in range(self.width)]
         self.gen_walls()
         self.madeHumans = False
