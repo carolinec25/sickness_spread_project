@@ -1,6 +1,6 @@
 import tkinter #used for visual frame
 import random
-import time
+
 
 class Frame():
     """allows for the visuals to run and be updated"""
@@ -87,7 +87,7 @@ class Hallway():
             y = H_point.getY()
             h = Edlers(self.canvas,x,y,self)
             self.elders.append(h)
-        for i in range(5):
+        for i in range(1):
             H_point = self.safeLocation()
             x = H_point.getX()
             y = H_point.getY()
@@ -322,4 +322,19 @@ class Point():
         return self.x
     def getY(self):
         return self.y
-Frame()
+    
+#basic ui/splash
+def click():
+    print("Button was clicked!")
+    Frame()
+root = tkinter.Tk()
+root.title("splash screen")
+root.geometry("600x600")
+canvas = tkinter.Canvas(root, width=600, height=600, bg="white")
+l = tkinter.Label(root, text = "sickness spreading simulator🤒",font=("Helvetica", 24))
+
+l.pack()
+button = tkinter.Button(root, text="Click Me!!!!", command=click)
+button.pack(anchor="center")
+canvas.mainloop() 
+
