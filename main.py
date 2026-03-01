@@ -94,8 +94,8 @@ class Hallway():
                 h+= random.randint(0,round(randH*self.height))
 
             self.canvas.create_rectangle(x, y, w, h,fill=color)
-            for i in range(x, min(x, self.width)):
-                for j in range(y, min(y, self.height)):
+            for i in range(x, min(w, self.width)):
+                for j in range(y, min(h, self.height)):
                     self.walls[i][j] = True
         
         def centerRoom(midX,midY,baseW,baseH,
@@ -120,8 +120,8 @@ class Hallway():
                 h+= random.randint(0,round(randH*self.height))
 
             self.canvas.create_rectangle(x, y, w, h,fill=color)
-            for i in range(x, min(x, self.width)):
-                for j in range(y, min(y, self.height)):
+            for i in range(x, min(w, self.width)):
+                for j in range(y, min(h, self.height)):
                     self.walls[i][j] = True
 
         #central room
@@ -130,11 +130,13 @@ class Hallway():
         centerRoom(1/2,1/2,2,2/20,randX=0,randW=0,color='black')
         centerRoom(1/2,4/5,1/10,15/20,randY=0,randH=0,color='black')
 
+        
         #borders
         randomRoom(0,0,1,2/20,rand=False)
         randomRoom(0,0,2/20,1,rand=False)
         randomRoom(18/20,0,2/20,1,rand=False)
         randomRoom(0,18/20,1,2/20,rand=False)
+        
         
 
 
