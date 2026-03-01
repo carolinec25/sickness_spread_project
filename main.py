@@ -43,6 +43,33 @@ class Hallway():
 
     def gen_walls(self):
 
+        def centralRoom():
+            #initialize to base value
+            x = round(7/20*self.width)
+            y = round(7/20*self.height)
+
+            #add/subtract random amounts
+            x+= random.randint(round(-1/10*self.width), round(1/10*self.width))
+            y+= random.randint(round(-1/10*self.height), round(1/10*self.height))
+
+            #initialize to base value
+            w = round(x+ 1/5*self.width)
+            h = round(y+ 1/5*self.height)
+
+            #add/subtract random amounts
+            w+= random.randint(0,round(3/20*self.width))
+            h+= random.randint(0,round(3/20*self.height))
+
+            self.canvas.create_rectangle(x, y, w, h,fill="black")
+            for i in range(x, min(x+w, self.width)):
+                for j in range(y, min(y+h, self.height)):
+                    self.walls[i][j] = True
+
+        centralRoom()
+
+
+
+        '''
         for V in range(50): #makes rooms
             x = random.randint(0, 600)
             y = random.randint(0, 600)
@@ -63,6 +90,7 @@ class Hallway():
                 for j in range(y, min(y+h, 600)):
                     self.walls[i][j] = True
         self.canvas.create_rectangle(x, y, 299, 299,fill="black")
+        '''
     def safeLocation(self):
         pass
 class Humans():
