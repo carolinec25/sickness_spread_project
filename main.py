@@ -31,17 +31,30 @@ class Hallway():
         self.kids = list()
         self.elders = list()
         self.adults = list()
+        self.sicklist = list()
         self.walls = [[False for _ in range(600)] for _ in range(600)]
+        self.sickArr = [[False for _ in range(600)] for _ in range(600)]
         self.gen_walls()
         self.madeHumans = False
 
     def tick(self):
-        for a in self.adults:
+        for i in range(len(self.adults)-1):
+            a=self.adults[i]
             a.move()
+            for i in range(a.getX(), a.getX() + 5):
+                for j in range(a.getY(), a.getY() +5):
+                    if self.sickArr[a.getX()][a.getY()]== True:
+                        ill = sick(a.getcanvas(),a.getX(),a.getY(),self)
+                        self.sicklist.append(ill)
+                        del self.adults[i]
         for c in self.kids:
             c.move()   
         for e in self.elders:
-            e.move()              
+            e.move()       
+        for s in self.sicklist:
+            s.move()      
+            self.sickArr[s.getX()][s.getY()] = True 
+   
         print("tick method")
 
     def draw (self):
@@ -68,6 +81,13 @@ class Hallway():
             y = H_point.getY()
             h = Edlers(self.canvas,x,y,self)
             self.elders.append(h)
+        for i in range(3):
+            H_point = self.safeLocation()
+            x = H_point.getX()
+            y = H_point.getY()
+            self.sickArr[x][y] = True
+            h = sick(self.canvas,x,y,self)
+            self.sicklist.append(h)
             #need to set direction
     def getAdultList(self):
         return self.adults
@@ -115,7 +135,7 @@ class Humans():
         self.h =h
         self.speed = 2
         self.rFactor = 10
-
+        self.range = 10
 
     def move(self):
         dx, dy = 0, 0
@@ -143,6 +163,7 @@ class Humans():
                 if self.h.walls[i][j] == False:
                     self.direction = random.randint(0,3)
                     return
+
         r = random.randint(0,100)
         if r<self.rFactor:
              self.direction = random.randint(0,3)
@@ -151,12 +172,16 @@ class Humans():
         self.x = new_x
         self.y = new_y
 
-       
+    def getcanvas(self):
+        return self.canvas
     def getdirction(self):
         return self.direction
     def setdirction(self,x):
         self.direction = x
-
+    def getX(self):
+        return self.x
+    def getY(self):
+        return self.y
 class Children(Humans):
     def __init__(self, canvas, x, y,h):
         self.canvas = canvas
@@ -168,6 +193,7 @@ class Children(Humans):
         self.h =h
         self.speed = 3
         self.rFactor = 30
+        
     pass
 class Edlers(Humans):
     def __init__(self, canvas, x, y,h):
@@ -184,8 +210,6 @@ class Edlers(Humans):
 class Adults(Humans):
      pass 
 
-
-
 class Point():
     def __init__(self,x,y):
         self.x = x
@@ -194,4 +218,18 @@ class Point():
         return self.x
     def getY(self):
         return self.y
+    
+class sick(Humans):
+    def __init__(self, canvas, x, y,h):
+        self.canvas = canvas
+        self.x = x
+        self.y = y
+        self.size = 4
+        self.shape = self.canvas.create_rectangle(x, y, x+4, y+4, fill="red")
+        self.direction = random.randint(0,3)
+        self.h =h
+        self.speed = 1
+        self.rFactor = 10
+
+    pass
 Frame()
