@@ -68,6 +68,29 @@ class Hallway():
             for i in range(x, min(x, self.width)):
                 for j in range(y, min(y, self.height)):
                     self.walls[i][j] = True
+        
+        def centerRoom(midX,midY,baseW,baseH,
+                       randX=1/10,randY=1/10,randW=3/20,randH=3/20,color = "black"):
+            #initialize to base value
+            x = round(baseX*self.width)
+            y = round(baseY*self.height)
+
+            #add/subtract random amounts
+            x+= random.randint(round(-randX*self.width), round(randY*self.width))
+            y+= random.randint(round(-randX*self.height), round(randY*self.height))
+
+            #initialize to base value
+            w = round(x+ baseW*self.width)
+            h = round(y+ baseH*self.height)
+
+            #add/subtract random amounts
+            w+= random.randint(0,round(randW*self.width))
+            h+= random.randint(0,round(randH*self.height))
+
+            self.canvas.create_rectangle(x, y, w, h,fill=color)
+            for i in range(x, min(x, self.width)):
+                for j in range(y, min(y, self.height)):
+                    self.walls[i][j] = True
 
         #central room
         randomRoom(7/20,7/20,5/20,5/20)
