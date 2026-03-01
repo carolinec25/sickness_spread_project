@@ -8,7 +8,6 @@ class Frame():
         self.canvas = tkinter.Canvas(self.root,width=600,height=600,bg="white")
         self.hall = Hallway(self.canvas)
         self.canvas.pack()
-        #self.walls = [[False for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
         self.run() 
         self.root.mainloop()
     def run(self):
@@ -18,7 +17,7 @@ class Frame():
 class Hallway():
     width = 600
     height =600
-    #assighn colors
+    #assign colors
     KRGB = "blue"
     ERGB = "green"
     ARGB = "yellow"
@@ -29,7 +28,7 @@ class Hallway():
         kids = list()
         elders = list()
         adults = list()
-        self.walls = [[False for _ in range(600)] for _ in range(600)]
+        self.walls = [[False for _ in range(self.width)] for _ in range(self.height)]
         self.gen_walls()
         self.madeHumans = False
     def tick(self):
@@ -43,7 +42,7 @@ class Hallway():
             madeHumans = True
 
     def gen_walls(self):
-        self.canvas.create_rectangle(0, 0, 600, 600,fill="white")
+
         for V in range(50): #makes rooms
             x = random.randint(0, 600)
             y = random.randint(0, 600)
