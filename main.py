@@ -38,6 +38,10 @@ class Hallway():
     def tick(self):
         for a in self.adults:
             a.move()
+        for c in self.kids:
+            c.move()   
+        for e in self.elders:
+            e.move()              
         print("tick method")
 
     def draw (self):
@@ -46,23 +50,35 @@ class Hallway():
             self.makeHumans()
 
     def makeHumans(self):
-        for i in range(500):
+        for i in range(400):
             H_point = self.safeLocation()
             x = H_point.getX()
             y = H_point.getY()
-            h = Humans(self.canvas,x,y,self)
+            h = Adults(self.canvas,x,y,self)
             self.adults.append(h)
+        for i in range(400):
+            H_point = self.safeLocation()
+            x = H_point.getX()
+            y = H_point.getY()
+            h = Children(self.canvas,x,y,self)
+            self.kids.append(h)
+        for i in range(200):
+            H_point = self.safeLocation()
+            x = H_point.getX()
+            y = H_point.getY()
+            h = Edlers(self.canvas,x,y,self)
+            self.elders.append(h)
             #need to set direction
     def getAdultList(self):
         return self.adults
     def gen_walls(self):
-        self.canvas.create_rectangle(0, 0, 600, 600,fill="white")
+        self.canvas.create_rectangle(0, 0, 600, 600,fill="white",width=0)
         for V in range(50): #makes rooms
             x = random.randint(0, 600)
             y = random.randint(0, 600)
             w = random.randint(20, 60)
             h = random.randint(20, 40)
-            self.canvas.create_rectangle(x, y, x+h, y+w,fill="black")
+            self.canvas.create_rectangle(x, y, x+h, y+w,fill="#d4c4a1",width=0)
             for i in range(x, min(x+w, 600)):
                 for j in range(y, min(y+h, 600)):
                     self.walls[i][j] = True
@@ -72,11 +88,11 @@ class Hallway():
             y = random.randint(0, 600)
             w = random.randint(10, 140)
             h = random.randint(10,100)
-            self.canvas.create_rectangle(x, y, x+w, y+h,fill="black")
+            self.canvas.create_rectangle(x, y, x+w, y+h,fill="#d4c4a1",width=0)
             for i in range(x, min(x+w, 600)):
                 for j in range(y, min(y+h, 600)):
                     self.walls[i][j] = True
-        self.canvas.create_rectangle(x, y, 299, 299,fill="black")
+        self.canvas.create_rectangle(x, y, 299, 299,fill="#d4c4a1",width=0)
     def safeLocation(self):
         x = random.randint(0,580)
         y = random.randint(0,580)
@@ -94,21 +110,23 @@ class Humans():
         self.x = x
         self.y = y
         self.size = 4
-        self.shape = self.canvas.create_rectangle(x, y, x+4, y+4, fill="red")
+        self.shape = self.canvas.create_rectangle(x, y, x+4, y+4, fill="yellow")
         self.direction = random.randint(0,3)
         self.h =h
+        self.speed = 2
+
 
     def move(self):
         dx, dy = 0, 0
 
         if self.direction == 0:
-           dy = -2
+           dy = -self.speed
         elif self.direction == 1:
-           dy = 2
+           dy = self.speed
         elif self.direction == 2:
-            dx = -2
+            dx = -self.speed
         elif self.direction == 3:
-            dx = 2
+            dx = self.speed
 
         new_x = self.x + dx
         new_y = self.y + dy
@@ -135,12 +153,30 @@ class Humans():
     def setdirction(self,x):
         self.direction = x
 
-""" class Children(humans):
-     pass
-class Edlers(humans):
-     pass
-class Adults(humans):
-     pass """
+class Children(Humans):
+    def __init__(self, canvas, x, y,h):
+        self.canvas = canvas
+        self.x = x
+        self.y = y
+        self.size = 4
+        self.shape = self.canvas.create_rectangle(x, y, x+4, y+4, fill="#a0a2eb")
+        self.direction = random.randint(0,3)
+        self.h =h
+        self.speed = 3
+    pass
+class Edlers(Humans):
+    def __init__(self, canvas, x, y,h):
+        self.canvas = canvas
+        self.x = x
+        self.y = y
+        self.size = 4
+        self.shape = self.canvas.create_rectangle(x, y, x+4, y+4, fill="#f55de8")
+        self.direction = random.randint(0,3)
+        self.h =h
+        self.speed = 1
+    pass
+class Adults(Humans):
+     pass 
 
 
 
