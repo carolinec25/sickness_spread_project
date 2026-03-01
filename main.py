@@ -72,8 +72,8 @@ class Hallway():
         def centerRoom(midX,midY,baseW,baseH,
                        randX=1/10,randY=1/10,randW=3/20,randH=3/20,color = "black"):
             #initialize to base value
-            x = round(baseX*self.width)
-            y = round(baseY*self.height)
+            x = round(midX*self.width-.5*baseW*self.height)
+            y = round(midY*self.height-.5*baseH*self.height)
 
             #add/subtract random amounts
             x+= random.randint(round(-randX*self.width), round(randY*self.width))
@@ -94,7 +94,11 @@ class Hallway():
 
         #central room
         randomRoom(7/20,7/20,5/20,5/20)
-        randomRoom(1/20,15/20,3/20,1/20)
+        #randomRoom(1/20,15/20,3/20,1/20)
+        centerRoom(1/2,1/5,1/10,15/20,randY=0,randH=0,color='blue')
+        centerRoom(1/2,1/2,2,2/20,randX=0,randW=0,color='blue')
+        centerRoom(1/2,4/5,1/10,15/20,randY=0,randH=0,color='blue')
+        
 
 
 
