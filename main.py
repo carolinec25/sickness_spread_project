@@ -34,20 +34,23 @@ class Hallway():
         self.walls = [[False for _ in range(600)] for _ in range(600)]
         self.gen_walls()
         self.madeHumans = False
+
     def tick(self):
         for a in self.adults:
             a.move()
         print("tick method")
+
     def draw (self):
         if self.madeHumans == False:
             self.madeHumans = True
             self.makeHumans()
+
     def makeHumans(self):
         for i in range(500):
             H_point = self.safeLocation()
             x = H_point.getX()
             y = H_point.getY()
-            h = Humans(self.canvas,x,y)
+            h = Humans(self.canvas,x,y,self)
             self.adults.append(h)
             #need to set direction
     def getAdultList(self):
@@ -75,31 +78,33 @@ class Hallway():
                     self.walls[i][j] = True
         self.canvas.create_rectangle(x, y, 299, 299,fill="black")
     def safeLocation(self):
-        x = random.randint(0,400)
-        y = random.randint(0,400)
-        if self.walls[x][y]:
+        x = random.randint(0,580)
+        y = random.randint(0,580)
+        if self.walls[x][y] == False:
             return self.safeLocation()
         else:
             return Point(x,y)
+    def getHalls(self):
+        return self.walls
         
 
 class Humans():
-    def __init__(self, canvas, x, y):
+    def __init__(self, canvas, x, y,h):
         self.canvas = canvas
         self.x = x
         self.y = y
         self.size = 4
-        self.shape = self.canvas.create_rectangle(
-            x, y, x+4, y+4, fill="red"
-        )
+        self.shape = self.canvas.create_rectangle(x, y, x+4, y+4, fill="red")
         self.direction = random.randint(0,3)
+        self.h =h
+
     def move(self):
         dx, dy = 0, 0
 
         if self.direction == 0:
-            dy = -2
+           dy = -2
         elif self.direction == 1:
-            dy = 2
+           dy = 2
         elif self.direction == 2:
             dx = -2
         elif self.direction == 3:
@@ -108,13 +113,23 @@ class Humans():
         new_x = self.x + dx
         new_y = self.y + dy
 
-        # keep inside screen
-        if 0 <= new_x <= 596 and 0 <= new_y <= 596:
-            self.canvas.move(self.shape, dx, dy)
-            self.x = new_x
-            self.y = new_y
-        else:
+        # Check screen bounds first
+        if not (0 <= new_x <= 596 and 0 <= new_y <= 596):
             self.direction = random.randint(0,3)
+            return
+
+        # Check wall collision ONLY at new location
+        for i in range(new_x, new_x + self.size):
+            for j in range(new_y, new_y + self.size):
+                if self.h.walls[i][j] == False:
+                    self.direction = random.randint(0,3)
+                    return
+
+        # If no collision, move
+        self.canvas.move(self.shape, dx, dy)
+        self.x = new_x
+        self.y = new_y
+        
     def getdirction(self):
         return self.direction
     def setdirction(self,x):
