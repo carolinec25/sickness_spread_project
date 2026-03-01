@@ -142,12 +142,15 @@ class Humans():
                 if self.h.walls[i][j] == False:
                     self.direction = random.randint(0,3)
                     return
-
+        r = random.randint(0,100)
+        if r<10:
+             self.direction = random.randint(0,3)
         # If no collision, move
         self.canvas.move(self.shape, dx, dy)
         self.x = new_x
         self.y = new_y
-        
+
+       
     def getdirction(self):
         return self.direction
     def setdirction(self,x):
