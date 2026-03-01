@@ -114,6 +114,7 @@ class Humans():
         self.direction = random.randint(0,3)
         self.h =h
         self.speed = 2
+        self.rFactor = 10
 
 
     def move(self):
@@ -143,7 +144,7 @@ class Humans():
                     self.direction = random.randint(0,3)
                     return
         r = random.randint(0,100)
-        if r<10:
+        if r<self.rFactor:
              self.direction = random.randint(0,3)
         # If no collision, move
         self.canvas.move(self.shape, dx, dy)
@@ -166,6 +167,7 @@ class Children(Humans):
         self.direction = random.randint(0,3)
         self.h =h
         self.speed = 3
+        self.rFactor = 30
     pass
 class Edlers(Humans):
     def __init__(self, canvas, x, y,h):
@@ -177,6 +179,7 @@ class Edlers(Humans):
         self.direction = random.randint(0,3)
         self.h =h
         self.speed = 1
+        self.rFactor = 10
     pass
 class Adults(Humans):
      pass 
