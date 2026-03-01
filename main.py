@@ -123,21 +123,22 @@ class Hallway():
             for i in range(x, min(w, self.width)):
                 for j in range(y, min(h, self.height)):
                     self.walls[i][j] = True
-
+        
         #central room
         centerRoom(1/2,1/2,8/20,8/20)
-        centerRoom(1/2,1/5,1/10,15/20,randY=0,randH=0,color='black')
-        centerRoom(1/2,1/2,2,2/20,randX=0,randW=0,color='black')
+        centerRoom(1/2,1/5,1/10,11/20,randY=0,randH=0,color='black')
+        #centerRoom(1/2,1/2,2,2/20,randX=0,randW=0,color='black')
         centerRoom(1/2,4/5,1/10,15/20,randY=0,randH=0,color='black')
 
         
         #borders
-        randomRoom(0,0,1,2/20,rand=False)
-        randomRoom(0,0,2/20,1,rand=False)
-        randomRoom(18/20,0,2/20,1,rand=False)
+        #randomRoom(0,0,1,2/20,rand=False)
+        #randomRoom(0,0,2/20,1,rand=False)
+        #randomRoom(18/20,0,2/20,1,rand=False)
         randomRoom(0,18/20,1,2/20,rand=False)
         
         
+    
 
 
 
