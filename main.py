@@ -3,9 +3,12 @@ import random
 
 class Frame():
     def __init__(self):
+        w = 600
+        h = 600
+
         self.root=tkinter.Tk()
         self.root.title("sickness")
-        self.canvas = tkinter.Canvas(self.root,width=600,height=600,bg="white")
+        self.canvas = tkinter.Canvas(self.root,width=w,height=h,bg="white")
         self.hall = Hallway(self.canvas)
         self.canvas.pack()
         self.run() 
@@ -16,7 +19,7 @@ class Frame():
         self.root.after(20,self.run)
 class Hallway():
     width = 600
-    height =600
+    height= 600
     #assign colors
     KRGB = "blue"
     ERGB = "green"
@@ -28,7 +31,7 @@ class Hallway():
         kids = list()
         elders = list()
         adults = list()
-        self.walls = [[False for _ in range(self.width)] for _ in range(self.height)]
+        self.walls = [[False for _ in range(self.height)] for _ in range(self.width)]
         self.gen_walls()
         self.madeHumans = False
     def tick(self):
@@ -42,30 +45,38 @@ class Hallway():
             madeHumans = True
 
     def gen_walls(self):
-
-        def centralRoom():
+        
+        def randomRoom(baseX,baseY,baseW,baseH,
+                       randX=1/10,randY=1/10,randW=3/20,randH=3/20,color = "black"):
             #initialize to base value
-            x = round(7/20*self.width)
-            y = round(7/20*self.height)
+            x = round(baseX*self.width)
+            y = round(baseY*self.height)
 
             #add/subtract random amounts
-            x+= random.randint(round(-1/10*self.width), round(1/10*self.width))
-            y+= random.randint(round(-1/10*self.height), round(1/10*self.height))
+            x+= random.randint(round(-randX*self.width), round(randY*self.width))
+            y+= random.randint(round(-randX*self.height), round(randY*self.height))
 
             #initialize to base value
-            w = round(x+ 1/5*self.width)
-            h = round(y+ 1/5*self.height)
+            w = round(x+ baseW*self.width)
+            h = round(y+ baseH*self.height)
 
             #add/subtract random amounts
-            w+= random.randint(0,round(3/20*self.width))
-            h+= random.randint(0,round(3/20*self.height))
+            w+= random.randint(0,round(randW*self.width))
+            h+= random.randint(0,round(randH*self.height))
 
-            self.canvas.create_rectangle(x, y, w, h,fill="black")
+            self.canvas.create_rectangle(x, y, w, h,fill=color)
             for i in range(x, min(x+w, self.width)):
                 for j in range(y, min(y+h, self.height)):
                     self.walls[i][j] = True
 
-        centralRoom()
+        #central room
+        randomRoom(7/20,7/20,5/20,5/20)
+        randomRoom(1/20,15/20,3/20,1/20)
+
+
+
+
+
 
 
 
