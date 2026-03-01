@@ -41,8 +41,8 @@ class Hallway():
         for i in range(len(self.adults)-1):
             a=self.adults[i]
             a.move()
-            for i in range(a.getX(), a.getX() + 5):
-                for j in range(a.getY(), a.getY() +5):
+            for i in range(a.getX(), a.getX() + 1):
+                for j in range(a.getY(), a.getY() +1):
                     if self.sickArr[a.getX()][a.getY()]== True:
                         ill = sick(a.getcanvas(),a.getX(),a.getY(),self)
                         self.sicklist.append(ill)
