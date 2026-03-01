@@ -150,6 +150,22 @@ class Hallway():
                 for j in range(y, min(h, self.height)):
                     self.walls[i][j] = True
         
+        def centerRoomPoints(midX,midY,baseW,baseH):
+            #initialize to base value
+            x = round(midX-.5*baseW)
+            y = round(midY-.5*baseH)
+
+
+            #initialize to base value
+            w = round(x+ baseW)
+            h = round(y+ baseH)
+
+
+            self.canvas.create_rectangle(x, y, w, h,fill="black")
+            for i in range(x, min(w, self.width)):
+                for j in range(y, min(h, self.height)):
+                    self.walls[i][j] = True
+
         def roomFromPoints(x,y,w,h):
 
             w+=x
@@ -175,10 +191,19 @@ class Hallway():
             start = findRoomLocation(w,h)
             roomFromPoints(start.getX(),start.getY(),w,h)
 
+            midx = start.getX()+.5*w
+            midy = start.getY()+.5*h
+
+            centerRoomPoints(midx,midy, 600,h/3)
+            #centerRoomPoints(midx,midy, w/3,600)
+            
+
         #decide number of rooms to be generated
 
-        rooms = random.randint(1,5)
-        '''
+        #rooms = random.randint(1,5)
+        rooms = 2
+
+
         if rooms == 1:
             #central room
             centerRoom(1/2,1/2,8/20,8/20)
@@ -193,16 +218,17 @@ class Hallway():
             randomRoom(18/20,0,2/20,1,rand=False)
             randomRoom(0,18/20,1,2/20,rand=False)
         else:
-            pass
-        '''
+            #borders
+            randomRoom(0,0,1,2/20,rand=False)
+            randomRoom(0,0,2/20,1,rand=False)
+            randomRoom(18/20,0,2/20,1,rand=False)
+            randomRoom(0,18/20,1,2/20,rand=False)
+
+            placeRoom(100,100)
+            placeRoom(100,100)
+        
 
         
-        #borders
-        randomRoom(0,0,1,2/20,rand=False)
-        randomRoom(0,0,2/20,1,rand=False)
-        randomRoom(18/20,0,2/20,1,rand=False)
-        randomRoom(0,18/20,1,2/20,rand=False)
-
         
 
 
