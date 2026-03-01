@@ -150,6 +150,40 @@ class Hallway():
                 for j in range(y, min(h, self.height)):
                     self.walls[i][j] = True
         
+        def vert(midX,midY,baseW,baseH):
+            #initialize to base value
+            x = round(midX-.5*baseW)
+            y = round(midY-.5*baseH)
+
+
+            #initialize to base value
+            w = round(x+ baseW)
+            h = round(y+ baseH)
+
+
+            self.canvas.create_rectangle(x, 0, w, 600,fill="black")
+            for i in range(x, min(w, self.width)):
+                for j in range(y, min(h, self.height)):
+                    self.walls[i][j] = True
+
+        def horiz(midX,midY,baseW,baseH):
+            #initialize to base value
+            x = round(midX-.5*baseW)
+            y = round(midY-.5*baseH)
+
+
+            #initialize to base value
+            w = round(x+ baseW)
+            h = round(y+ baseH)
+
+
+            self.canvas.create_rectangle(0, y, 600, h,fill="black")
+            for i in range(x, min(w, self.width)):
+                for j in range(y, min(h, self.height)):
+                    self.walls[i][j] = True
+
+
+        
         def centerRoomPoints(midX,midY,baseW,baseH):
             #initialize to base value
             x = round(midX-.5*baseW)
@@ -194,17 +228,20 @@ class Hallway():
             midx = start.getX()+.5*w
             midy = start.getY()+.5*h
 
-            centerRoomPoints(midx,midy, 600,h/3)
-            #centerRoomPoints(midx,midy, w/3,600)
+            horiz(midx,midy, 600,h/3)
+            vert(midx,midy, w/3,600)
             
 
         #decide number of rooms to be generated
 
-        #rooms = random.randint(1,5)
-        rooms = 2
+        rooms = random.randint(1,4)
+        
 
 
         if rooms == 1:
+            '''
+            #OLD ALGORITHM
+
             #central room
             centerRoom(1/2,1/2,8/20,8/20)
             centerRoom(1/2,1/5,1/10,8/20,randY=0,randH=0,color='black')
@@ -217,7 +254,16 @@ class Hallway():
             randomRoom(0,0,2/20,1,rand=False)
             randomRoom(18/20,0,2/20,1,rand=False)
             randomRoom(0,18/20,1,2/20,rand=False)
-        else:
+            '''
+
+            #borders
+            randomRoom(0,0,1,2/20,rand=False)
+            randomRoom(0,0,2/20,1,rand=False)
+            randomRoom(18/20,0,2/20,1,rand=False)
+            randomRoom(0,18/20,1,2/20,rand=False)
+
+            placeRoom(300,300)
+        elif rooms ==2:
             #borders
             randomRoom(0,0,1,2/20,rand=False)
             randomRoom(0,0,2/20,1,rand=False)
@@ -226,6 +272,31 @@ class Hallway():
 
             placeRoom(100,100)
             placeRoom(100,100)
+        elif rooms ==3:
+            #borders
+            randomRoom(0,0,1,2/20,rand=False)
+            randomRoom(0,0,2/20,1,rand=False)
+            randomRoom(18/20,0,2/20,1,rand=False)
+            randomRoom(0,18/20,1,2/20,rand=False)
+
+            placeRoom(100,100)
+            placeRoom(100,100)
+            placeRoom(100,100)
+        elif rooms ==4:
+            #borders
+            randomRoom(0,0,1,2/20,rand=False)
+            randomRoom(0,0,2/20,1,rand=False)
+            randomRoom(18/20,0,2/20,1,rand=False)
+            randomRoom(0,18/20,1,2/20,rand=False)
+
+            placeRoom(100,100)
+            w = random.randint(50,100)
+            placeRoom(w,w)
+            placeRoom(100,100)
+            w = random.randint(50,100)
+            placeRoom(w,w)
+
+        
         
 
         
