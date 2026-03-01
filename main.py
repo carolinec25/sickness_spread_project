@@ -405,7 +405,7 @@ class Humans():
         self.isSick = True
         self.canvas.itemconfig(self.shape, fill='red')
     def chanceIll(self):
-        if random.randint(0,100)<2:
+        if random.randint(0,100)<1:
             return True
         else:
             return False
@@ -422,7 +422,7 @@ class Children(Humans):
         self.rFactor = 30
         self.isSick = False
     def chanceIll(self):
-        if random.randint(0,100)<5:
+        if random.randint(0,100)<2:
             return True
         else:
             return False
@@ -440,7 +440,7 @@ class Edlers(Humans):
         self.rFactor = 10
         self.isSick = False
     def chanceIll(self):
-        if random.randint(0,100)<10:
+        if random.randint(0,100)<5:
             return True
         else:
             return False
@@ -461,16 +461,30 @@ class Point():
     
 #basic ui/splash
 def click():
-    print("Button was clicked!")
+
     Frame()
+
 root = tkinter.Tk()
 root.title("splash screen")
-root.geometry("600x600")
 canvas = tkinter.Canvas(root, width=600, height=600, bg="white")
-l = tkinter.Label(root, text = "sickness spreading simulator🤒",font=("Helvetica", 24))
+canvas.pack()
 
-l.pack()
-button = tkinter.Button(root, text="Click Me!!!!", command=click)
-button.pack(anchor="center")
+t = canvas.create_text(300, 40, text="Illness spreading simulation 🤒", font=("Helvetica", 20), fill="black")
+t = canvas.create_text(300, 120, text="legend:", font=("Helvetica", 20), fill="black")
+
+s = canvas.create_rectangle(150, 150, 200, 200,fill="#a0a2eb")
+t = canvas.create_text(270, 180, text="-child", font=("Helvetica", 20), fill="black")
+
+s = canvas.create_rectangle(150, 250, 200, 300,fill="#f55de8")
+t = canvas.create_text(270, 270, text="-elder", font=("Helvetica", 20), fill="black")
+
+s = canvas.create_rectangle(150, 350, 200, 400,fill="yellow")
+t = canvas.create_text(270, 370, text="-adult", font=("Helvetica", 20), fill="black")
+
+s = canvas.create_rectangle(150, 450, 200, 500,fill="red")
+t = canvas.create_text(270, 470, text="-sick", font=("Helvetica", 20), fill="black")
+
+button = tkinter.Button (canvas,text='click here to start!',command=click)
+button.place(x=240,y=60)
 canvas.mainloop() 
 
