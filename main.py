@@ -466,23 +466,23 @@ def click():
 
 root = tkinter.Tk()
 root.title("splash screen")
-canvas = tkinter.Canvas(root, width=600, height=600, bg="white")
+canvas = tkinter.Canvas(root, width=600, height=600, bg="#7dff13")
 canvas.pack()
 
-t = canvas.create_text(300, 40, text="Illness spreading simulation 🤒", font=("Helvetica", 20), fill="black")
-t = canvas.create_text(300, 120, text="legend:", font=("Helvetica", 20), fill="black")
+t = canvas.create_text(300, 40, text="Disease spreading simulation 🤒", font=("Helvetica", 20), fill="black")
+t = canvas.create_text(300, 120, text="legend:", font=("Helvetica", 30,"bold"), fill="black")
 
 s = canvas.create_rectangle(150, 150, 200, 200,fill="#a0a2eb")
-t = canvas.create_text(270, 180, text="-child", font=("Helvetica", 20), fill="black")
+t = canvas.create_text(250, 175, text="---> child", font=("Helvetica", 20), fill="black")
 
 s = canvas.create_rectangle(150, 250, 200, 300,fill="#f55de8")
-t = canvas.create_text(270, 270, text="-elder", font=("Helvetica", 20), fill="black")
+t = canvas.create_text(250, 275, text="---> elder", font=("Helvetica", 20), fill="black")
 
 s = canvas.create_rectangle(150, 350, 200, 400,fill="yellow")
-t = canvas.create_text(270, 370, text="-adult", font=("Helvetica", 20), fill="black")
+t = canvas.create_text(250, 375, text="---> adult", font=("Helvetica", 20), fill="black")
 
 s = canvas.create_rectangle(150, 450, 200, 500,fill="red")
-t = canvas.create_text(270, 470, text="-sick", font=("Helvetica", 20), fill="black")
+t = canvas.create_text(250, 475, text="---> sick", font=("Helvetica", 20), fill="black")
 
 button = tkinter.Button (canvas,text='click here to start!',command=click)
 button.place(x=240,y=60)
