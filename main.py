@@ -3,6 +3,7 @@ import random
 import time
 
 class Frame():
+    """allows for the visuals to run and be updated"""
     def __init__(self):
         self.root = tkinter.Tk()
         self.root.title("sickness")
@@ -24,6 +25,7 @@ class Frame():
 
 
 class Hallway():
+    """holds all info for the map. Including wall locations and list of who is there"""
     width = 600
     height =600
     def __init__(self,c:tkinter.Canvas):
@@ -38,6 +40,7 @@ class Hallway():
         self.madeHumans = False
 
     def tick(self):
+        """allows for people to be moved with each tick"""
         allHumans = self.adults + self.kids + self.elders +self.sickList
 
         # Move all humans once
@@ -46,10 +49,10 @@ class Hallway():
 
         # Spread sickness
         for human in allHumans:
-            for i in range(human.getX() - 2, human.getX() + 3):
-                for j in range(human.getY() - 2, human.getY() + 3):
+            for i in range(human.getX() - 2, human.getX() + 2):
+                for j in range(human.getY() - 2, human.getY() + 2):
                     if 0 <= i < 600 and 0 <= j < 600:
-                        if self.sickArr[i][j]:
+                        if (self.sickArr[i][j]) and (human.chanceIll()):
                             human.makesick()
 
         # Update sickArr for all sick humans
@@ -59,11 +62,13 @@ class Hallway():
         print("tick method")
 
     def draw (self):
+        """called at start to make begening people """
         if self.madeHumans == False:
             self.madeHumans = True
             self.makeHumans()
 
     def makeHumans(self):
+        """makes first humans """
         for i in range(400):
             H_point = self.safeLocation()
             x = H_point.getX()
@@ -115,6 +120,7 @@ class Hallway():
                     self.walls[i][j] = True
         self.canvas.create_rectangle(x, y, 299, 299,fill="#d4c4a1",width=0)
     def safeLocation(self):
+        """find a safe location (in walkale area) where huamans are alllowed to be"""
         x = random.randint(0,580)
         y = random.randint(0,580)
         if self.walls[x][y] == False:
@@ -140,6 +146,7 @@ class Humans():
 
 
     def move(self):
+        """used to move all types of human - speed can be adjusted depending on what child is created """
         dx, dy = 0, 0
 
         if self.direction == 0:
@@ -159,7 +166,7 @@ class Humans():
             self.direction = random.randint(0,3)
             return
 
-        # Check wall collision ONLY at new location
+        # Check wall collision  at new location
         for i in range(new_x, new_x + self.size):
             for j in range(new_y, new_y + self.size):
                 if self.h.walls[i][j] == False:
@@ -173,7 +180,7 @@ class Humans():
         self.x = new_x
         self.y = new_y
 
-       
+    #getter and setter
     def getdirction(self):
         return self.direction
     def setdirction(self,x):
@@ -185,6 +192,11 @@ class Humans():
     def makesick(self):
         self.isSick = True
         self.canvas.itemconfig(self.shape, fill='red')
+    def chanceIll(self):
+        if random.randint(0,100)<2:
+            return True
+        else:
+            return False
 class Children(Humans):
     def __init__(self, canvas, x, y,h):
         self.canvas = canvas
@@ -197,6 +209,11 @@ class Children(Humans):
         self.speed = 3
         self.rFactor = 30
         self.isSick = False
+    def chanceIll(self):
+        if random.randint(0,100)<5:
+            return True
+        else:
+            return False
     pass
 class Edlers(Humans):
     def __init__(self, canvas, x, y,h):
@@ -210,6 +227,11 @@ class Edlers(Humans):
         self.speed = 1
         self.rFactor = 10
         self.isSick = False
+    def chanceIll(self):
+        if random.randint(0,100)<10:
+            return True
+        else:
+            return False
     pass
 class Adults(Humans):
      pass 
