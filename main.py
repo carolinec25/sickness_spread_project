@@ -19,8 +19,6 @@ class Frame():
         self.hall.draw()
         self.hall.tick()
         self.root.after(20, self.run)
-    def gethallway(self):
-        return self.gethallway()
     
 
 
@@ -95,7 +93,6 @@ class Humans():
             x, y, x+4, y+4, fill="red"
         )
         self.direction = random.randint(0,3)
-        self.hallway = Hallway(self.canvas)
     def move(self):
         dx, dy = 0, 0
 
@@ -104,29 +101,25 @@ class Humans():
         elif self.direction == 1:
             dy = 2
         elif self.direction == 2:
-         dx = -2
+            dx = -2
         elif self.direction == 3:
-           dx = 2
+            dx = 2
 
         new_x = self.x + dx
         new_y = self.y + dy
 
-        # Check screen bounds first
-        if not (0 <= new_x <= 596 and 0 <= new_y <= 596):
+        # keep inside screen
+        if 0 <= new_x <= 596 and 0 <= new_y <= 596:
+            self.canvas.move(self.shape, dx, dy)
+            self.x = new_x
+            self.y = new_y
+        else:
             self.direction = random.randint(0,3)
-            return
+    def getdirction(self):
+        return self.direction
+    def setdirction(self,x):
+        self.direction = x
 
-        # Check wall collision (check all 4 corners of the square)
-        for i in range(new_x, new_x + self.size):
-            for j in range(new_y, new_y + self.size):
-                if self.hallway.walls[i][j]:
-                    self.direction = random.randint(0,3)
-                    return
-
-        # If no collision, move
-        self.canvas.move(self.shape, dx, dy)
-        self.x = new_x
-        self.y = new_y
 """ class Children(humans):
      pass
 class Edlers(humans):
