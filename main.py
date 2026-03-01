@@ -172,7 +172,7 @@ class Hallway():
     def safeLocation(self):
         x = random.randint(0,580)
         y = random.randint(0,580)
-        if self.walls[x][y] == False:
+        if self.walls[x][y] == False or self.walls[x+1][y+1] == False or self.walls[x+2][y+2] == False or self.walls[x+3][y+3] == False:
             return self.safeLocation()
         else:
             return Point(x,y)
